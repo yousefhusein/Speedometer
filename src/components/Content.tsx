@@ -7,7 +7,7 @@ export default function Content () {
     const [watchId, setWatchId] = React.useState<number>();
     const [speed, setSpeed] = React.useState<number>(0);
     const [totalDistance, setTotalDistance] = React.useState<number>(0);
-    const [maxSpeed, setMaxSpeed] = React.useState<number>(0);
+    const [dataList, setDataList] = React.useState<number[]>([]);
     const [time, setTime] = React.useState<number>(0);
 
     const stopRecording = () => {
@@ -29,9 +29,7 @@ export default function Content () {
                 const time = Math.abs(Date.now() - lastTime) / 1000 / 3600
                 const distance = haversineDistance(lastCoords, pos.coords) / 1000
                 setTotalDistance(x => x + distance)
-                if ((distance / time) > maxSpeed) {
-                    setMaxSpeed(distance / time)
-                }
+                setDataList(x => [...x, distance / time])
                 setSpeed(distance / time)
                 setTime(x => x + time)
             }
@@ -78,7 +76,7 @@ export default function Content () {
                 <div className="bg-white dark:bg-gray-900 shadow px-2 py-2 rounded text-center">
                     <span className="text-gray-600 text-nowrap">Max Speed</span>
                     <p className="text-xl sm:text-2xl md:text-3xl text-cyan-500">
-                        {maxSpeed.toFixed(2)} <small>km</small>
+                        {(Math.max(...dataList) || 0).toFixed(2)} <small>km</small>
                     </p>
                 </div>
                 <div className="bg-white dark:bg-gray-900 shadow px-2 py-2 rounded text-center">

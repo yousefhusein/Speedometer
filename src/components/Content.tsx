@@ -11,7 +11,7 @@ export default function Content () {
     }, [dataList])
 
     const averageSpeed = React.useMemo(() => {
-        return (dataList.filter(y => y.coords.speed).reduce((x, y) => x + (y.coords.speed || 0), 0) / dataList.length) * 3.6;
+        return ((dataList.filter(y => y.coords.speed).reduce((x, y) => x + (y.coords.speed || 0), 0) / dataList.length) * 3.6) || 0;
     }, [dataList])
 
     const maxSpeed = React.useMemo(() => {

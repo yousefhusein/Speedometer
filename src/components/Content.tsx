@@ -1,6 +1,5 @@
 import React from "react";
 import Speedometer from "./Speedometer";
-import haversineDistance from 'haversine-distance'
 
 export default function Content () {
     const [isStarted, setIsStarted] = React.useState(false)
@@ -15,33 +14,20 @@ export default function Content () {
             navigator.geolocation.clearWatch(watchId);
             setWatchId(undefined);
         }
-        setIsStarted(false);
+        setIsStarted(false)
     }
 
     const startRecording = () => {
         setIsStarted(true)
-
-        let times = 0;
-        let lastCoords: GeolocationCoordinates;
-        let lastTime: number;
-        // Success handler
+        setTime(Date.now())
+        
         const success = (pos: GeolocationPosition) => {
-            if (times > 5) {
-                if (lastCoords && lastTime) {
-                    const time = Math.abs(Date.now() - lastTime) / 1000 / 3600
-                    const distance = haversineDistance(lastCoords, pos.coords) / 1000
-                    setTotalDistance(x => x + distance)
-                    setDataList(x => [...x, distance / time])
-                    setSpeed(distance / time)
-                    setTime(x => x + time)
-                }
-                lastCoords = pos.coords;
-                lastTime = Date.now();
-            }
-            times++;
+            const calculatedSpeed = (pos.coords.speed || 0) * 3.6
+            setDataList(x => [...x, calculatedSpeed])
+            setSpeed(calculatedSpeed)
+            setTime(x => x + time)
         };
     
-        // Error handler
         const error = (err: GeolocationPositionError) => {
             alert(err.message);
             stopRecording()
@@ -49,9 +35,9 @@ export default function Content () {
     
         if (typeof navigator !== 'undefined' && navigator.geolocation) {
             const options = {
-                enableHighAccuracy: true, // Request high accuracy for better tracking
-                timeout: 10000, // Maximum time to wait for a position (in milliseconds)
-                maximumAge: 0 // Do not use a cached position, request a fresh one
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
             };
     
             setWatchId(navigator.geolocation.watchPosition(success, error, options))

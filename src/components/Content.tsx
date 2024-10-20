@@ -21,20 +21,23 @@ export default function Content () {
     const startRecording = () => {
         setIsStarted(true)
 
+        const startedTimestamp = Date.now();
         let lastCoords: GeolocationCoordinates;
         let lastTime: number;
         // Success handler
         const success = (pos: GeolocationPosition) => {
-            if (lastCoords && lastTime) {
-                const time = Math.abs(Date.now() - lastTime) / 1000 / 3600
-                const distance = haversineDistance(lastCoords, pos.coords) / 1000
-                setTotalDistance(x => x + distance)
-                setDataList(x => [...x, distance / time])
-                setSpeed(distance / time)
-                setTime(x => x + time)
+            if ((Date.now() - startedTimestamp) >= 1000 * 15) {
+                if (lastCoords && lastTime) {
+                    const time = Math.abs(Date.now() - lastTime) / 1000 / 3600
+                    const distance = haversineDistance(lastCoords, pos.coords) / 1000
+                    setTotalDistance(x => x + distance)
+                    setDataList(x => [...x, distance / time])
+                    setSpeed(distance / time)
+                    setTime(x => x + time)
+                }
+                lastCoords = pos.coords;
+                lastTime = Date.now();
             }
-            lastCoords = pos.coords;
-            lastTime = Date.now();
         };
     
         // Error handler
@@ -50,10 +53,7 @@ export default function Content () {
                 maximumAge: 0 // Do not use a cached position, request a fresh one
             };
     
-            setWatchId(navigator.geolocation.watchPosition(success, error, options));
-    
-            return () => {
-            };
+            setWatchId(navigator.geolocation.watchPosition(success, error, options))
         } else {
             console.log('Geolocation is not supported!');
             alert('Geolocation is not supported!');
@@ -76,13 +76,19 @@ export default function Content () {
                 <div className="bg-white dark:bg-gray-900 shadow px-2 py-2 rounded text-center">
                     <span className="text-gray-600 text-nowrap">Max Speed</span>
                     <p className="text-xl sm:text-2xl md:text-3xl text-cyan-500">
-                        {(Math.max(...dataList) || 0).toFixed(2)} <small>km</small>
+                        {(Math.max(...dataList) || 0).toFixed(2)} <small>km/h</small>
                     </p>
                 </div>
                 <div className="bg-white dark:bg-gray-900 shadow px-2 py-2 rounded text-center">
                     <span className="text-gray-600 text-nowrap">Time</span>
                     <p className="text-xl sm:text-2xl md:text-3xl text-cyan-500">
                         {Math.floor(time)} <small>hour(s)</small>
+                    </p>
+                </div>
+                <div className="bg-white dark:bg-gray-900 shadow px-2 py-2 rounded text-center">
+                    <span className="text-gray-600 text-nowrap">Average Speed</span>
+                    <p className="text-xl sm:text-2xl md:text-3xl text-cyan-500">
+                        {(dataList.reduce((a, b) => a + b, 0) / dataList.length).toFixed(2)} <small>km/h</small>
                     </p>
                 </div>
             </div>

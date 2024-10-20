@@ -14,6 +14,10 @@ export default function Content () {
         return (dataList.filter(y => y.coords.speed).reduce((x, y) => x + (y.coords.speed || 0), 0) / dataList.length) * 3.6;
     }, [dataList])
 
+    const maxSpeed = React.useMemo(() => {
+        return dataList.length ? Math.max(...dataList.map((e) => e?.coords?.speed || 0)) * 3.6 : 0;
+    }, [dataList])
+
     const totalDistance = React.useMemo(() => {
         let total = 0;
     
@@ -90,7 +94,7 @@ export default function Content () {
                 <div className="bg-white dark:bg-gray-900 shadow px-2 py-2 rounded text-center">
                     <span className="text-gray-600 text-nowrap">Max Speed</span>
                     <p className="text-xl sm:text-2xl md:text-3xl text-cyan-500">
-                        {(Math.max(...dataList.map(e => e.coords.speed || 0)) || 0).toFixed(2)} <small>km/h</small>
+                        {maxSpeed.toFixed(2)} <small>km/h</small>
                     </p>
                 </div>
                 <div className="bg-white dark:bg-gray-900 shadow px-2 py-2 rounded text-center">

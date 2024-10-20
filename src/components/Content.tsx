@@ -21,12 +21,12 @@ export default function Content () {
     const startRecording = () => {
         setIsStarted(true)
 
-        const startedTimestamp = Date.now();
+        let times = 0;
         let lastCoords: GeolocationCoordinates;
         let lastTime: number;
         // Success handler
         const success = (pos: GeolocationPosition) => {
-            if ((Date.now() - startedTimestamp) >= 1000 * 15) {
+            if (times > 5) {
                 if (lastCoords && lastTime) {
                     const time = Math.abs(Date.now() - lastTime) / 1000 / 3600
                     const distance = haversineDistance(lastCoords, pos.coords) / 1000
@@ -38,6 +38,7 @@ export default function Content () {
                 lastCoords = pos.coords;
                 lastTime = Date.now();
             }
+            times++;
         };
     
         // Error handler
@@ -62,11 +63,11 @@ export default function Content () {
     }
 
     return (
-        <div className="custom-container relative pt-24 pb-12">
+        <div className="custom-container relative pt-16 pb-12">
             <div className="text-center mb-4 w-full flex flex-row justify-center">
                 <Speedometer value={Math.round(speed)} />
             </div>
-            <div className="grid space-x-3 grid-cols-3 w-full mb-4">
+            <div className="grid gap-3 grid-cols-2 w-full mb-4">
                 <div className="bg-white dark:bg-gray-900 shadow px-2 py-2 rounded text-center">
                     <span className="text-gray-600 text-nowrap">Total Distance</span>
                     <p className="text-xl sm:text-2xl md:text-3xl text-cyan-500">

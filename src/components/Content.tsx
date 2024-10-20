@@ -29,7 +29,7 @@ export default function Content () {
                 const time = Math.abs(Date.now() - lastTime) / 1000 / 3600
                 const distance = haversineDistance(lastCoords, pos.coords) / 1000
                 setTotalDistance(x => x + distance)
-                if (distance / time > speed) {
+                if ((distance / time) > maxSpeed) {
                     setMaxSpeed(distance / time)
                 }
                 setSpeed(distance / time)
@@ -71,19 +71,19 @@ export default function Content () {
             <div className="grid space-x-3 grid-cols-3 w-full mb-4">
                 <div className="bg-white dark:bg-gray-900 shadow px-2 py-2 rounded text-center">
                     <span className="text-gray-600 text-nowrap">Total Distance</span>
-                    <p className="text-3xl text-cyan-500">
+                    <p className="text-xl sm:text-2xl md:text-3xl text-cyan-500">
                         {totalDistance.toFixed(2)} <small>km</small>
                     </p>
                 </div>
                 <div className="bg-white dark:bg-gray-900 shadow px-2 py-2 rounded text-center">
                     <span className="text-gray-600 text-nowrap">Max Speed</span>
-                    <p className="text-3xl text-cyan-500">
+                    <p className="text-xl sm:text-2xl md:text-3xl text-cyan-500">
                         {maxSpeed.toFixed(2)} <small>km</small>
                     </p>
                 </div>
                 <div className="bg-white dark:bg-gray-900 shadow px-2 py-2 rounded text-center">
                     <span className="text-gray-600 text-nowrap">Time</span>
-                    <p className="text-3xl text-cyan-500">
+                    <p className="text-xl sm:text-2xl md:text-3xl text-cyan-500">
                         {Math.floor(time)} <small>hour(s)</small>
                     </p>
                 </div>

@@ -7,7 +7,7 @@ export default function Content () {
     const [watchId, setWatchId] = React.useState<number>();
     const [speed, setSpeed] = React.useState<number>(0);
     const [totalDistance, setTotalDistance] = React.useState<number>(0);
-    const [dataList, setDataList] = React.useState<number[]>([]);
+    const [dataList, setDataList] = React.useState<number[]>([0]);
     const [time, setTime] = React.useState<number>(0);
 
     const stopRecording = () => {

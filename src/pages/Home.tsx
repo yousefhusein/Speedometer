@@ -6,6 +6,7 @@ import haversine from 'haversine-distance'
 
 export default function Content() {
     const [isStarted, setIsStarted] = React.useState(false)
+    const [isPaused, setIsPaused] = React.useState(false)
     const [watchId, setWatchId] = React.useState<number>()
     const { dataList, setDataList } = useDataList()
 
@@ -58,6 +59,20 @@ export default function Content() {
             setWatchId(undefined)
         }
         setIsStarted(false)
+        setDataList([])
+    }
+
+    const pauseRecording = () => {
+        if (watchId) {
+            if (watchId) {
+                navigator.geolocation.clearWatch(watchId)
+                setWatchId(undefined)
+            }
+            setIsPaused(true)
+        } else {
+            startRecording()
+            setIsPaused(false)
+        }
     }
 
     const startRecording = () => {
@@ -129,20 +144,29 @@ export default function Content() {
                 </div>
                 <div className='text-center'>
                     {isStarted ? (
-                        <button
-                            type='button'
-                            className='bg-red-700 px-5 py-4 text-lg rounded-lg outline-none transition-transform active:scale-90'
-                            onClick={stopRecording}
-                        >
-                            Stop Recording
-                        </button>
+                        <>
+                            <button
+                                type='button'
+                                className='bg-transparent ring-2 ring-cyan-500 text-cyan-500 px-6 py-3 me-3 text-lg rounded-lg outline-none'
+                                onClick={pauseRecording}
+                            >
+                                {isPaused ? 'Resume' : 'Pause'}
+                            </button>
+                            <button
+                                type='button'
+                                className='bg-transparent ring-2 ring-cyan-500 text-cyan-500 px-6 py-3 text-lg rounded-lg outline-none'
+                                onClick={stopRecording}
+                            >
+                                Stop
+                            </button>
+                        </>
                     ) : (
                         <button
                             type='button'
-                            className='bg-indigo-700 px-5 py-4 text-lg rounded-lg outline-none transition-transform active:scale-90'
+                            className='bg-transparent ring-2 ring-cyan-500 text-cyan-500 px-6 py-3 text-lg rounded-lg outline-none'
                             onClick={startRecording}
                         >
-                            Start Recording
+                            Start
                         </button>
                     )}
                 </div>

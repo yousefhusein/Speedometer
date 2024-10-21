@@ -166,7 +166,7 @@ export default function Content() {
                             tickAmount: 6
                         },
                         yaxis: {
-                            max: 400,
+                            max: maxSpeed > 200 ? 400 : maxSpeed > 100 ? 200 : 100,
                             min: 0,
                             tickAmount: 8
                         }

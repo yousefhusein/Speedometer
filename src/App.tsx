@@ -2,14 +2,15 @@ import './App.css'
 
 import '@fontsource/squada-one'
 import Header from './components/Header'
-import Content from './components/Content'
+import Router from './Router'
+import { Provider } from './contexts/dataList'
 
 function App() {
     return (
-        <>
+        <Provider>
             <Header />
-            <Content />
-        </>
+            <Router />
+        </Provider>
     )
 }
 

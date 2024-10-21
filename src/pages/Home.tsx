@@ -144,7 +144,8 @@ export default function Content() {
                     height={400}
                     width="100%"
                     series={[{
-                        data: dataList.map((e) => [e.timestamp, Math.round(e.coords.speed || Math.random() * 100)])
+                        name: 'Speed in km/h',
+                        data: dataList.map((e) => [e.timestamp, Math.round(e.coords.speed || 0) * 3.6])
                     }]}
                     options={{
                         theme: {
@@ -162,7 +163,7 @@ export default function Content() {
                         },
                         xaxis: {
                             type: 'datetime',
-                            tickAmount: 6,
+                            tickAmount: 6
                         }
                     }}
                 />

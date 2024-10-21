@@ -120,7 +120,7 @@ export default function Content() {
                 {isStarted ? (
                     <button
                         type='button'
-                        className='bg-red-700 px-5 py-4 text-lg rounded-lg'
+                        className='bg-red-700 px-5 py-4 text-lg rounded-lg outline-none transition-transform active:scale-90'
                         onClick={stopRecording}
                     >
                         Stop Recording
@@ -128,7 +128,7 @@ export default function Content() {
                 ) : (
                     <button
                         type='button'
-                        className='bg-indigo-700 px-5 py-4 text-lg rounded-lg'
+                        className='bg-indigo-700 px-5 py-4 text-lg rounded-lg outline-none transition-transform active:scale-90'
                         onClick={startRecording}
                     >
                         Start Recording

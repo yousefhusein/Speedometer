@@ -28,10 +28,6 @@ export default function Content() {
             : 0
     }, [dataList])
 
-    const totalDistance = React.useMemo(() => {
-        return 0;
-    }, [dataList])
-
     const time = React.useMemo(() => {
         if (dataList.length >= 2) {
             return (
@@ -44,6 +40,31 @@ export default function Content() {
             return 0
         }
     }, [dataList])
+
+    const totalDistance = React.useMemo(() => {
+        let total = 0;
+    
+        for (let i = 1; i < dataList.length; i++) {
+            const lat1 = dataList[i - 1].coords.latitude;
+            const lon1 = dataList[i - 1].coords.longitude;
+            const lat2 = dataList[i].coords.latitude;
+            const lon2 = dataList[i].coords.longitude;
+    
+            const R = 6371; // Radius of the Earth in km
+            const dLat = (lat2 - lat1) * (Math.PI / 180);
+            const dLon = (lon2 - lon1) * (Math.PI / 180);
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distance = R * c;
+    
+            total += distance;
+        }
+    
+        return total;
+    }, [dataList]);
 
     const stopRecording = () => {
         if (watchId) {

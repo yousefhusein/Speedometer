@@ -145,7 +145,7 @@ export default function Content() {
                     width="100%"
                     series={[{
                         name: 'Speed in km/h',
-                        data: dataList.map((e) => [e.timestamp, Math.round(e.coords.speed || 0) * 3.6])
+                        data: dataList.map((e) => [e.timestamp, Math.round((e.coords.speed || 0) * 3.6)])
                     }]}
                     options={{
                         theme: {

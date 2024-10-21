@@ -145,7 +145,7 @@ export default function Content() {
                     width="100%"
                     series={[{
                         name: 'Speed in km/h',
-                        data: dataList.map((e) => [e.timestamp, Math.round((e.coords.speed || 0) * 3.6)])
+                        data: dataList.map((e) => [e.timestamp, Math.round(e.coords.speed || 0) * 3.6])
                     }]}
                     options={{
                         theme: {
@@ -154,7 +154,7 @@ export default function Content() {
                         chart: {
                             background: '#000',
                             zoom: {
-                                autoScaleYaxis: true,
+                                autoScaleYaxis: true
                             },
                             fontFamily: 'Squada One'
                         },
@@ -164,6 +164,11 @@ export default function Content() {
                         xaxis: {
                             type: 'datetime',
                             tickAmount: 6
+                        },
+                        yaxis: {
+                            max: 400,
+                            min: 0,
+                            tickAmount: 8
                         }
                     }}
                 />

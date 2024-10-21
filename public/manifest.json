@@ -1,0 +1,17 @@
+{
+    "name": "Speedometer",
+    "short_name": "Speedometer",
+    "theme_color": "#ffcbe4",
+    "background_color": "#fa99ca",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "http://speedometer-theta.vercel.app/",
+    "description": "Speedometer",
+    "orientation": "any",
+    "icons": [
+        {
+            "src": "http://speedometer-theta.vercel.app/speedometer.png",
+            "sizes": "1024x1024"
+        }
+    ]
+}

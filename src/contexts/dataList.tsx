@@ -1,13 +1,13 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from 'react'
 
 type PropsType = {
-    dataList: GeolocationPosition[],
+    dataList: GeolocationPosition[]
     setDataList: React.Dispatch<React.SetStateAction<GeolocationPosition[]>>
 }
 
 const dataListContext = createContext<Partial<PropsType>>({})
 
-export function Provider ({ children }: { children: React.ReactNode }) {
+export function Provider({ children }: { children: React.ReactNode }) {
     const [dataList, setDataList] = useState<GeolocationPosition[]>([])
 
     return (
@@ -18,11 +18,11 @@ export function Provider ({ children }: { children: React.ReactNode }) {
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export function useDataList () {
+export function useDataList() {
     const { dataList, setDataList } = useContext(dataListContext)
-    
+
     return {
         setDataList: setDataList!,
-        dataList: dataList!
+        dataList: dataList!,
     }
 }

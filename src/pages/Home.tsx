@@ -2,6 +2,7 @@ import React from 'react'
 import Speedometer from '../components/Speedometer'
 import { useDataList } from '../contexts/dataList'
 import ApexCharts from 'react-apexcharts'
+import haversine from 'haversine-distance'
 
 export default function Content() {
     const [isStarted, setIsStarted] = React.useState(false)
@@ -42,29 +43,14 @@ export default function Content() {
     }, [dataList])
 
     const totalDistance = React.useMemo(() => {
-        let total = 0;
-    
+        let total = 0
         for (let i = 1; i < dataList.length; i++) {
-            const lat1 = dataList[i - 1].coords.latitude;
-            const lon1 = dataList[i - 1].coords.longitude;
-            const lat2 = dataList[i].coords.latitude;
-            const lon2 = dataList[i].coords.longitude;
-    
-            const R = 6371; // Radius of the Earth in km
-            const dLat = (lat2 - lat1) * (Math.PI / 180);
-            const dLon = (lon2 - lon1) * (Math.PI / 180);
-            const a =
-                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            const distance = R * c;
-    
-            total += distance;
+            total +=
+                haversine(dataList[i - 1].coords, dataList[i].coords) *
+                Math.pow(10, -3)
         }
-    
-        return total;
-    }, [dataList]);
+        return total
+    }, [dataList])
 
     const stopRecording = () => {
         if (watchId) {
@@ -119,7 +105,9 @@ export default function Content() {
                         </p>
                     </div>
                     <div className='bg-white dark:bg-gray-900 shadow px-2 py-2 rounded text-center'>
-                        <span className='text-gray-600 text-nowrap'>Max Speed</span>
+                        <span className='text-gray-600 text-nowrap'>
+                            Max Speed
+                        </span>
                         <p className='text-xl sm:text-2xl md:text-3xl text-cyan-500'>
                             {maxSpeed.toFixed(2)} <small>km/h</small>
                         </p>
@@ -159,38 +147,50 @@ export default function Content() {
                     )}
                 </div>
             </div>
-            <div className="mt-8">
+            <div className='mt-8'>
                 <ApexCharts
                     type='area'
                     height={400}
-                    width="100%"
-                    series={[{
-                        name: 'Speed in km/h',
-                        data: dataList.map((e) => [e.timestamp, Math.round(e.coords.speed || 0) * 3.6])
-                    }]}
+                    width='100%'
+                    series={[
+                        {
+                            name: 'Speed in km/h',
+                            data: dataList.map((e) => [
+                                e.timestamp,
+                                Math.round(e.coords.speed || 0) * 3.6,
+                            ]),
+                        },
+                    ]}
                     options={{
                         theme: {
-                            mode: 'dark'
+                            mode: 'dark',
                         },
                         chart: {
                             background: '#000',
                             zoom: {
-                                autoScaleYaxis: true
+                                autoScaleYaxis: true,
                             },
-                            fontFamily: 'Squada One'
+                            fontFamily: 'Squada One',
                         },
                         dataLabels: {
-                            enabled: false
+                            enabled: false,
                         },
                         xaxis: {
                             type: 'datetime',
-                            tickAmount: 6
+                            tickAmount: 6,
                         },
                         yaxis: {
-                            max: maxSpeed > 200 ? 400 : maxSpeed > 160 ? 200 : maxSpeed > 80 ? 160 : 80,
+                            max:
+                                maxSpeed > 200
+                                    ? 400
+                                    : maxSpeed > 160
+                                      ? 200
+                                      : maxSpeed > 80
+                                        ? 160
+                                        : 80,
                             min: 0,
-                            tickAmount: 8
-                        }
+                            tickAmount: 8,
+                        },
                     }}
                 />
             </div>

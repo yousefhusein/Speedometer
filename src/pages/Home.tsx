@@ -202,6 +202,9 @@ export default function Content() {
                         xaxis: {
                             type: 'datetime',
                             tickAmount: 6,
+                            labels: {
+                                format: 'mm:hh:ss MM/DD'
+                            }
                         },
                         yaxis: {
                             max:
@@ -213,7 +216,7 @@ export default function Content() {
                                         ? 160
                                         : 80,
                             min: 0,
-                            tickAmount: 8,
+                            tickAmount: 8
                         },
                     }}
                 />
